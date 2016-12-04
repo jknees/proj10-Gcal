@@ -285,7 +285,7 @@ def deleteEvents():
   app.logger.debug("Events in session: {}".format(len(session['events'])))
   eventsToBeDeleted = []
   for event in events:
-    eventsToBeDeleted.addend(session['events'][int(event)])
+    eventsToBeDeleted.append(session['events'][int(event)])
 
   for event in eventsToBeDeleted:
     session['events'].remove(event)
