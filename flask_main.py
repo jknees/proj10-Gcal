@@ -316,6 +316,7 @@ def deleteEvents():
       session['events'].remove(event)
     else:
       tmp = agenda.Appt.from_string(event)
+      tmp.desc = "free time"
       session['events'].remove(event)
       session['events'].append(str(tmp))
 
