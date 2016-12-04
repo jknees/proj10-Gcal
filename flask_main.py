@@ -288,7 +288,7 @@ def deleteEvents():
     eventsToBeDeleted.append(g.events[int(event)])
 
   for event in eventsToBeDeleted:
-    g.events.remove(event)
+    flask.g.events.remove(event)
 
   return flask.redirect(url_for('choose'))
 
