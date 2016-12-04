@@ -290,6 +290,8 @@ def deleteEvents():
   for event in eventsToBeDeleted:
     session['events'].remove(event)
 
+  session.clear()
+
   return flask.redirect(url_for('choose'))
 
 ####
