@@ -289,9 +289,6 @@ def chooseCal():
 
   comp_free = free_times.complement(freeblocks)
   flash_list = []
-  object_list = []
-  object_list.extend(comp_free)
-  app.logger.debug(object_list)
   for appt in comp_free:
     flash_list.append(str(appt))
 
@@ -301,7 +298,6 @@ def chooseCal():
   flash_list.sort()
 
   session['events'] = flash_list
-  session['objectEvents'] = object_list
   
   return flask.redirect(url_for('choose'))
 
@@ -317,14 +313,18 @@ def deleteEvents():
   for event in eventsToBeDeleted:
     session['events'].remove(event)
 
+  timesLeft = agenda.Agenda()
+
+  for event in session['events']:
+    timesLeft.append(agenda.Appt.from_string(event))
+
   session['uuid'] = uuid4()
 
-  record = { 'events'
-  }
+  record = { 'events': timesLeft,
+              'id': session['uuid']
+          }
 
-
-
-  session.clear()
+  collection.insert(record)
 
   return flask.redirect(url_for('choose'))
 
