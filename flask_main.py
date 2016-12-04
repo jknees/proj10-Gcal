@@ -274,7 +274,7 @@ def chooseCal():
 
   flash_list.sort()
 
-  g.events = flash_list
+  flask.g.events = flash_list
   
   return flask.redirect(url_for('choose'))
 
