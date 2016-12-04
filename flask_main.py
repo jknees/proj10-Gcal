@@ -274,7 +274,7 @@ def chooseCal():
 
   flash_list.sort()
 
-  flask.g.events = flash_list
+  session['events'] = flash_list
   
   return flask.redirect(url_for('choose'))
 
@@ -285,10 +285,10 @@ def deleteEvents():
   app.logger.debug("Events in session: {}".format(len(session['events'])))
   eventsToBeDeleted = []
   for event in events:
-    eventsToBeDeleted.append(g.events[int(event)])
+    eventsToBeDeleted.append(session['events'][int(event)])
 
   for event in eventsToBeDeleted:
-    flask.g.events.remove(event)
+    session['events'].remove(event)
 
   return flask.redirect(url_for('choose'))
 
