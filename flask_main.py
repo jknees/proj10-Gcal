@@ -282,9 +282,13 @@ def chooseCal():
 def deleteEvents():
   events = request.form.getlist('vals')
   app.logger.debug("Events wanting to be deleted: {}".format(events))
-  app.logger.debug("Events in session {}".format(len(session['events'])))
+  app.logger.debug("Events in session: {}".format(len(session['events'])))
+  eventsToBeDeleted = []
   for event in events:
-    session['events'].remove(session['events'][int(event)])
+    eventsToBeDeleted.add(session['events'][int(event)])
+
+  for event in eventsToBeDeleted:
+    session['events'].remove(event)
 
   return flask.redirect(url_for('choose'))
 
