@@ -318,7 +318,7 @@ def deleteEvents():
   for event in session['events']:
     timesLeft.append(agenda.Appt.from_string(event))
 
-  session['uuid'] = uuid4()
+  session['uuid'] = uuid.uuid4()
 
   record = { 'events': timesLeft,
               'id': session['uuid']
