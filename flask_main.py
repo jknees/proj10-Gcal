@@ -276,13 +276,12 @@ def chooseCal():
 
   session['events'] = flash_list
   
-  # for appointment in flash_list:
-  #   flask.flash(appointment)
   return flask.redirect(url_for('choose'))
 
 @app.route('/deleteEvents', methods=['POST'])
 def deleteEvents():
   events = request.form.getlist('vals')
+  app.logger.debug("Events wanting to be deleted: {}".format(events))
   for event in events:
     session['events'].remove(session['events'][int(event)])
 
@@ -407,7 +406,7 @@ def list_events(service, begin_time, end_time, calId):
   app.logger.debug("Entering list_events")
   event_list = service.events().list(calendarId=calId, timeMin=begin_time, timeMax=end_time).execute()['items']
   results = []
-  app.logger.debug("Events(in list_events): {}".format(event_list))
+  # app.logger.debug("Events(in list_events): {}".format(event_list))
   for event in event_list:
     if "transparency" not in event:
       summary = event["summary"]
