@@ -312,7 +312,7 @@ def deleteEvents():
 
   for event in eventsToBeDeleted:
     fields = event.split("|")
-    if (fields[1] == "free time"):
+    if (fields[1].strip() == "free time"):
       session['events'].remove(event)
     else:
       tmp = agenda.Appt.from_string(event)
