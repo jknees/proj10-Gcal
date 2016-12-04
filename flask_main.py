@@ -284,7 +284,7 @@ def chooseCal():
 def deleteEvents():
   events = request.form.getlist('vals')
   for event in events:
-    session['events'].remove(event)
+    session['events'].remove(session['events'][event])
 
   return flask.redirect(url_for('choose'))
 
