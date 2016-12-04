@@ -2,6 +2,7 @@ import flask
 from flask import render_template
 from flask import request
 from flask import url_for
+from flask import session
 import uuid
 
 import json
@@ -250,7 +251,7 @@ def chooseCal():
   for cal in sCal:
     events.extend(list_events(gcal_service, begin_date.isoformat(), end_date.isoformat(), cal))
   
-  app.logger.debug("Events: {}".format(events))
+  #app.logger.debug("Events: {}".format(events))
   for e in events:
     if not (arrow.get(e['end_time']).timetz() < begin_time or arrow.get(e['start_time']).timetz() > end_time):
       appt = agenda.Appt(arrow.get(e["start_time"]).datetime.date(), arrow.get(e["start_time"]).datetime.timetz(), arrow.get(e["end_time"]).datetime.timetz(), e["summary"])
@@ -272,9 +273,11 @@ def chooseCal():
     flash_list.append(str(appt))
 
   flash_list.sort()
+
+  session['events'] = flash_list
   
-  for appointment in flash_list:
-    flask.flash(appointment)
+  # for appointment in flash_list:
+  #   flask.flash(appointment)
   return flask.redirect(url_for('choose'))
 
 
