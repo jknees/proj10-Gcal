@@ -21,6 +21,16 @@ import httplib2   # used in oauth2 flow
 # Google API for services 
 from apiclient import discovery
 
+# Mondgo database
+from pymongo import MongoClient
+import secrets.admin_secrets
+import secrets.client_secrets
+MONGO_CLIENT_URL = "mongodb://{}:{}@localhost:{}/{}".format(
+    secrets.client_secrets.db_user,
+    secrets.client_secrets.db_user_pw,
+    secrets.admin_secrets.port, 
+    secrets.client_secrets.db)
+
 ###
 # Globals
 ###
@@ -43,6 +53,19 @@ app.secret_key=CONFIG.secret_key
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
 CLIENT_SECRET_FILE = secrets.admin_secrets.google_key_file  ## You'll need this
 APPLICATION_NAME = 'MeetMe class project'
+
+####
+# Database connection per server process
+###
+
+try: 
+    dbclient = MongoClient(MONGO_CLIENT_URL)
+    db = getattr(dbclient, secrets.client_secrets.db)
+    collection = db.dated
+
+except:
+    print("Failure opening database.  Is Mongo running? Correct password?")
+    sys.exit(1)
 
 #############################
 #
@@ -266,6 +289,9 @@ def chooseCal():
 
   comp_free = free_times.complement(freeblocks)
   flash_list = []
+  object_list = []
+  object_list.extend(comp_free)
+  app.logger.debug(object_list)
   for appt in comp_free:
     flash_list.append(str(appt))
 
@@ -275,6 +301,7 @@ def chooseCal():
   flash_list.sort()
 
   session['events'] = flash_list
+  session['objectEvents'] = object_list
   
   return flask.redirect(url_for('choose'))
 
@@ -290,9 +317,17 @@ def deleteEvents():
   for event in eventsToBeDeleted:
     session['events'].remove(event)
 
+  session['uuid'] = uuid4()
+
+  record = { 'events'
+  }
+
+
+
   session.clear()
 
   return flask.redirect(url_for('choose'))
+
 
 ####
 #
