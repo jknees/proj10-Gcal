@@ -35,6 +35,19 @@
 <body>
 <div class="container">
 
+<h1>Times</h1>
+
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
 <h2>Date range</h2>
   <form action="/setrange" method="post">
   <input type="text" name="daterange" size="12"
@@ -95,12 +108,10 @@ End Time:
 {% endif %}
 <br>
 
-<h1>Times Test</h1>
-
 {% if session['events'] is defined  %}
   <h1>Times Test</h1>
   <div class="row">
-  <form action="/deleteEvent" method="POST">
+  <form action="/deleteEvents" method="POST">
   {% set count = 0 %}
   {% for event in session['events'] %}
           <div class="col-md-4">
@@ -117,18 +128,6 @@ End Time:
 {% endif %}
 <br>
 
-<h1>Times</h1>
-
-
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
 
   </div>  <!-- container (for bootstrap) -->
   </body> </html>

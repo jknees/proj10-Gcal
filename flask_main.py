@@ -280,6 +280,13 @@ def chooseCal():
   #   flask.flash(appointment)
   return flask.redirect(url_for('choose'))
 
+@app.route('/deleteEvents', methods=['POST'])
+def deleteEvents():
+  events = request.form.getlist('vals')
+  for event in events:
+    session['events'].remove(event)
+
+  return flask.redirect(url_for('choose'))
 
 ####
 #
