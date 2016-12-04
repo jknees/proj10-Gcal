@@ -320,7 +320,7 @@ def deleteEvents():
 
   session['uuid'] = uuid.uuid4()
 
-  record = { 'events': timesLeft,
+  record = { 'events': session['events'],
               'id': session['uuid']
           }
 
