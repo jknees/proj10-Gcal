@@ -282,6 +282,7 @@ def chooseCal():
 def deleteEvents():
   events = request.form.getlist('vals')
   app.logger.debug("Events wanting to be deleted: {}".format(events))
+  app.logger.debug("Events in session {}".format(len(session['events'])))
   for event in events:
     session['events'].remove(session['events'][int(event)])
 
