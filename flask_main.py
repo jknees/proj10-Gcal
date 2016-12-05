@@ -323,7 +323,7 @@ def deleteEvents():
 
   timesLeft = agenda.Agenda()
 
-  session['uuid'] = uuid.uuid4()
+  session['uuid'] = str(uuid.uuid4())
 
   record = { 'events': session['events'],
              'uuid': session['uuid'],
