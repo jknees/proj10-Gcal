@@ -346,6 +346,8 @@ def invitee(uuid):
   session['begin_date'] = sessionVariables['begin_date']
   session['events'] = sessionVariables['events']
   session['uuid'] = sessionVariables['uuid']
+  session['formattedEndTime'] = arrow.get(session['end_time']).format("HH:mm")
+  session['formattedBeginTime'] = arrow.get(session['begin_time']).format("HH:mm")
 
   app.logger.debug(session)
   return(render_template('invitee.html'))
