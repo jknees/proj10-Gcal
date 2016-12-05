@@ -335,7 +335,7 @@ def deleteEvents():
 
   collection.insert(record)
 
-  return flask.redirect('/invitee/<{}>'.format(session['uuid']))
+  return flask.redirect(url_for('invitee', uuid = session['uuid']))
 
   @app.route('/invitee/<uuid>')
   def invitee(uuid):
