@@ -348,6 +348,7 @@ def invitee(uuid):
   session['uuid'] = sessionVariables['uuid']
 
   app.logger.debug(session)
+  return(render_template('index.html'))
 
 # @app.route('/invitee/<uuid>')
 #   def invitee(uuid):
