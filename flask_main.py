@@ -337,17 +337,27 @@ def deleteEvents():
 
   return flask.redirect(url_for('invitee', uuid = session['uuid']))
 
-  @app.route('/invitee/<uuid>')
-  def invitee(uuid):
-    sessionVariables = collection.find({'uuid': uuid})
-    session['end_time'] = sessionVariables['end_time']
-    session['begin_time'] = sessionVariables['begin_time']
-    session['end_date'] = sessionVariables['end_date']
-    session['begin_date'] = sessionVariables['begin_date']
-    session['events'] = sessionVariables['events']
-    session['uuid'] = sessionVariables['uuid']
+@app.route('/invitee/<uuid>')
+def invitee(uuid):
+  sessionVariables = collection.find({'uuid': uuid})
+  session['end_time'] = sessionVariables['end_time']
+  session['begin_time'] = sessionVariables['begin_time']
+  session['end_date'] = sessionVariables['end_date']
+  session['begin_date'] = sessionVariables['begin_date']
+  session['events'] = sessionVariables['events']
+  session['uuid'] = sessionVariables['uuid']
 
-    app.logger.debug(session)
+  app.logger.debug(session)
+
+# @app.route('/invitee/<uuid>')
+#   def invitee(uuid):
+#     sessionVariables = collection.find({'uuid': uuid})
+#     session['end_time'] = sessionVariables['end_time']
+#     session['begin_time'] = sessionVariables['begin_time']
+#     session['end_date'] = sessionVariables['end_date']
+#     session['begin_date'] = sessionVariables['begin_date']
+#     session['events'] = sessionVariables['events']
+#     session['uuid'] = sessionVariables['uuid']
 
 
 
