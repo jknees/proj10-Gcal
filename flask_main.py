@@ -323,18 +323,32 @@ def deleteEvents():
 
   timesLeft = agenda.Agenda()
 
-  for event in session['events']:
-    timesLeft.append(agenda.Appt.from_string(event))
-
   session['uuid'] = uuid.uuid4()
 
   record = { 'events': session['events'],
-              'id': session['uuid']
+             'uuid': session['uuid'],
+             'begin_date': session['begin_date'],
+             'end_date': session['end_date'],
+             'begin_time': session['begin_time'],
+             'end_time': session['end_time']
           }
 
   collection.insert(record)
 
-  return flask.redirect(url_for('choose'))
+  return flask.redirect('/invitee/<{}>'.format(session['uuid']))
+
+  @app.route('/invitee/<uuid>')
+  def invitee(uuid):
+    sessionVariables = collection.find({'uuid': uuid})
+    session['end_time'] = sessionVariables['end_time']
+    session['begin_time'] = sessionVariables['begin_time']
+    session['end_date'] = sessionVariables['end_date']
+    session['begin_date'] = sessionVariables['begin_date']
+    session['events'] = sessionVariables['events']
+    session['uuid'] = sessionVariables['uuid']
+
+    app.logger.debug(session)
+
 
 
 ####
