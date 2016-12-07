@@ -266,7 +266,6 @@ def chooseCal():
   end_time = arrow.get(flask.session['end_time']).timetz()
 
   sCal = request.form.getlist('vals')
-  app.logger.debug("sCal: {}".format(sCal))
   events = []
   free_times = agenda.Agenda()
   freeblocks = agenda.Agenda()
@@ -304,8 +303,6 @@ def chooseCal():
 @app.route('/deleteEvents', methods=['POST'])
 def deleteEvents():
   events = request.form.getlist('vals')
-  app.logger.debug("Events wanting to be deleted: {}".format(events))
-  app.logger.debug("Events in session: {}".format(len(session['events'])))
   eventsToBeDeleted = []
   for event in events:
     eventsToBeDeleted.append(session['events'][int(event)])
@@ -326,6 +323,8 @@ def deleteEvents():
     fields = event.split()
     if (fields[1].strip() != "free time"):
       session['events'].remove(event)
+
+  app.logger.debug("Events after removing busy times: {}".format(session['events']))
 
   record = { 'events': session['events'],
              'uuid': session['uuid'],
