@@ -359,7 +359,7 @@ def deleteEventsCombine():
 
   # Very Important!!!!
   # FIXME: Needs to intersect with two agendas.
-  collection.update({'uuid': session['uuid']}, {$set:{'events' : session['databaseEvents'].extend(session['events'])}})
+  collection.update({'uuid': session['uuid']}, {"$set":{'events' : session['databaseEvents'].extend(session['events'])}})
 
   return flask.redirect(url_for('schedule', uuid = session['uuid']))
 
