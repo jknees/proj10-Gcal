@@ -338,7 +338,7 @@ def deleteEvents():
           }
 
   collection.insert(record)
-  session.clear()
+  
   return flask.redirect(url_for('schedule', uuid = session['uuid']))
 
 @app.route('/deleteEventsCombine', methods=['POST'])
@@ -376,7 +376,7 @@ def deleteEventsCombine():
   newAgenda.normalize()
 
   collection.update({'uuid': session['uuid']}, {"$set":{'events' : str(newAgenda)}})
-  session.clear()
+  
   return flask.redirect(url_for('schedule', uuid = session['uuid']))
 
 @app.route('/invitee/<uuid>')
