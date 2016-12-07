@@ -318,17 +318,14 @@ def deleteEvents():
       session['events'].append(str(tmp))
 
 
-  app.logger.debug("Events before removing busy times {}".format(session['events']))
-
   session['uuid'] = str(uuid.uuid4())
 
   for event in session['events']:
     fields = event.split("|")
+    app.logger.debug("fields[1]: {}".format(fields[1].strip()))
     if not (fields[1].strip() == "free time"):
       app.logger.debug("Removed: {}".format(event))
       session['events'].remove(event)
-
-  app.logger.debug("Events after removing busy times: {}".format(session['events']))
 
   record = { 'events': session['events'],
              'uuid': session['uuid'],
