@@ -318,6 +318,8 @@ def deleteEvents():
       session['events'].append(str(tmp))
 
 
+  app.logger.debug("Events before removing busy times {}".format(session['events']))
+
   session['uuid'] = str(uuid.uuid4())
   for event in session['events']:
     fields = event.split()
