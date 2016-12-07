@@ -325,7 +325,7 @@ def deleteEvents():
   for event in session['events']:
     fields = event.split()
     if (fields[1].strip() != "free time"):
-      session[events].remove(event)
+      session['events'].remove(event)
 
   record = { 'events': session['events'],
              'uuid': session['uuid'],
@@ -362,7 +362,7 @@ def deleteEventsCombine():
   for event in session['events']:
     fields = event.split()
     if (fields[1].strip() != "free time"):
-      session[events].remove(event)
+      session['events'].remove(event)
 
   # Very Important!!!!
   # FIXME: Needs to intersect with two agendas.
