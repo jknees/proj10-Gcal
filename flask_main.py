@@ -372,14 +372,18 @@ def deleteEventsCombine():
     if (fields[1].strip() != "free time"):
       session['events'].remove(event)
 
-  session['databaseEvents'].extend(session['events'])
-  newAgenda = agenda.Agenda()
+  
+  curAgenda = agenda.Agenda()
   for event in session['databaseEvents']:
+    curAgenda.append(agenda.Appt.from_string(event))
+
+  newAgenda = agenda.Agenda()
+  for event in session['events']:
     newAgenda.append(agenda.Appt.from_string(event))
 
-  newAgenda.normalize()
+  dataAgenda = newAgenda.intersect(curAgenda)
 
-  collection.update({'uuid': session['uuid']}, {"$set":{'events' : str(newAgenda)}})
+  collection.update({'uuid': session['uuid']}, {"$set":{'events' : str(dataAgenda)}})
   
   return flask.redirect(url_for('schedule', uuid = session['uuid']))
 
