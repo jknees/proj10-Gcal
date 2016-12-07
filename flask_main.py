@@ -323,11 +323,11 @@ def deleteEvents():
   app.logger.debug("session['events] = {}".format(session['events']))
 
   for i in range(len(session['events'])):
-    app.logger.debug("event: {}".format(event[i]))
-    # fields = event[i].split("|")
-    # if not (fields[1].strip() == "free time"):
-    #   app.logger.debug("Removed: {}".format(event[i]))
-    #   del session['events'][i]
+    app.logger.debug("event: {}".format(session['events'][i]))
+    fields = session['events'][i].split("|")
+    if not (fields[1].strip() == "free time"):
+      app.logger.debug("Removed: {}".format(session['events'][i]))
+      del session['events'][i]
 
   record = { 'events': session['events'],
              'uuid': session['uuid'],
