@@ -324,7 +324,7 @@ def deleteEvents():
 
   for event in session['events']:
     fields = event.split("|")
-    app.logger.debug("fields[0]: {}, fields[1]: {}".format(fields[1].strip(), fields[1].strip()))
+    app.logger.debug("fields[0]: {}, fields[1]: {}".format(fields[0].strip(), fields[1].strip()))
     if not (fields[1].strip() == "free time"):
       app.logger.debug("Removed: {}".format(event))
       session['events'].remove(event)
@@ -338,7 +338,7 @@ def deleteEvents():
           }
 
   collection.insert(record)
-  
+
   return flask.redirect(url_for('schedule', uuid = session['uuid']))
 
 @app.route('/deleteEventsCombine', methods=['POST'])
