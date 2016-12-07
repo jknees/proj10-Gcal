@@ -372,8 +372,6 @@ def deleteEventsCombine():
     if (fields[1].strip() != "free time"):
       session['events'].remove(event)
 
-  # Very Important!!!!
-  # FIXME: Needs to intersect with two agendas.
   session['databaseEvents'].extend(session['events'])
   newAgenda = agenda.Agenda()
   for event in session['databaseEvents']:
