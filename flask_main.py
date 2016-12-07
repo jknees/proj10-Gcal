@@ -335,7 +335,33 @@ def deleteEvents():
 
   collection.insert(record)
 
-  return flask.redirect(url_for('invitee', uuid = session['uuid']))
+  return flask.redirect(url_for('schedule', uuid = session['uuid']))
+
+@app.route('/deleteEvents', methods=['POST'])
+def deleteEventsCombine():
+  # Called in invitee.html
+  events = request.form.getlist('vals')
+  app.logger.debug("Events wanting to be deleted: {}".format(events))
+  app.logger.debug("Events in session: {}".format(len(session['events'])))
+  eventsToBeDeleted = []
+  for event in events:
+    eventsToBeDeleted.append(session['events'][int(event)])
+
+  for event in eventsToBeDeleted:
+    fields = event.split("|")
+    if (fields[1].strip() == "free time"):
+      session['events'].remove(event)
+    else:
+      tmp = agenda.Appt.from_string(event)
+      tmp.desc = "free time"
+      session['events'].remove(event)
+      session['events'].append(str(tmp))
+
+  # Very Important!!!!
+  # FIXME: Needs to intersect with two agendas.
+  collection.update({'uuid': session['uuid']}, {$set:{'events' : session['databaseEvents'].extend(session['events'])}})
+
+  return flask.redirect(url_for('schedule', uuid = session['uuid']))
 
 @app.route('/invitee/<uuid>')
 def invitee(uuid):
@@ -344,7 +370,7 @@ def invitee(uuid):
   session['begin_time'] = sessionVariables['begin_time']
   session['end_date'] = sessionVariables['end_date']
   session['begin_date'] = sessionVariables['begin_date']
-  session['events'] = sessionVariables['events']
+  session['databaseEvents'] = sessionVariables['events']
   session['uuid'] = sessionVariables['uuid']
   session['formattedEndTime'] = arrow.get(session['end_time']).format("HH:mm")
   session['formattedBeginTime'] = arrow.get(session['begin_time']).format("HH:mm")
@@ -352,17 +378,18 @@ def invitee(uuid):
   app.logger.debug(session)
   return(render_template('invitee.html'))
 
-# @app.route('/invitee/<uuid>')
-#   def invitee(uuid):
-#     sessionVariables = collection.find({'uuid': uuid})
-#     session['end_time'] = sessionVariables['end_time']
-#     session['begin_time'] = sessionVariables['begin_time']
-#     session['end_date'] = sessionVariables['end_date']
-#     session['begin_date'] = sessionVariables['begin_date']
-#     session['events'] = sessionVariables['events']
-#     session['uuid'] = sessionVariables['uuid']
+# Needs testing
+@app.route('/schedule/<uuid>')
+def invitee(uuid):
+  sessionVariables = collection.find({'uuid': uuid})
+  session['end_time'] = sessionVariables['end_time']
+  session['begin_time'] = sessionVariables['begin_time']
+  session['end_date'] = sessionVariables['end_date']
+  session['begin_date'] = sessionVariables['begin_date']
+  session['events'] = sessionVariables['events']
+  session['uuid'] = sessionVariables['uuid']
 
-
+  return(render_template('schedule.html'))
 
 ####
 #
