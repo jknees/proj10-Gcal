@@ -323,7 +323,7 @@ def deleteEvents():
   session['uuid'] = str(uuid.uuid4())
 
   for event in session['events']:
-    fields = event.split()
+    fields = event.split("|")
     if (fields[1].strip() != "free time"):
       app.logger.debug("Removed: {}".format(event))
       session['events'].remove(event)
