@@ -321,6 +321,8 @@ def deleteEvents():
   session['uuid'] = str(uuid.uuid4())
 
   app.logger.debug("session['events'] = {}".format(session['events']))
+  for event in session['events']:
+    app.logger.debug("Event: {}".format(event))
 
   for event in session['events']:
     app.logger.debug("event: {}".format(event))
