@@ -324,7 +324,7 @@ def deleteEvents():
 
   for event in session['events']:
     fields = event.split("|")
-    if (fields[1].strip() != "free time"):
+    if not (fields[1].strip() == "free time"):
       app.logger.debug("Removed: {}".format(event))
       session['events'].remove(event)
 
