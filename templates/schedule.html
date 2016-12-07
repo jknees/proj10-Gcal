@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html lang="en"> <head>
+<title>Appointments</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" type="text/css"
+     href="//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.css"
+/>
+
+
+<link rel="stylesheet" type="text/css"
+    href="/static/css/busy.css"
+/>
+
+<!-- jquery from a content distribution network; probably cached -->
+<script type="text/javascript"
+     src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+</script>
+
+<!-- Ideally the rest of our javascript dependencies would be
+     bundled and minified with 'browserify', but I've found that
+     it difficult to handle browserify dependencies for class
+     projects.  So, we'll pick up moment and a date range picker
+     from CDNs instead.
+-->
+
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+
+</head>
+
+<body>
+<div class="container">
+
+<h1>Times</h1>
+
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+<h2>Date range</h2>
+  <form action="/setrange" method="post">
+  <input type="text" name="daterange" size="12" readonly="readonly"
+         value="{{session.daterange}}">
+
+<br />
+
+<h2>Time Range</h2>
+Begin Time:
+<input type="text" name="begin_time" placeholder="HH:mm a" readonly="readonly" value="{{session.formattedBeginTime}}">
+End Time:
+<input type="text" name="end_time" placeholder="HH:mm a" readonly="readonly" value="{{session.formattedEndTime}}">
+<input type="submit" value="Proceed">
+</form>
+    <!--
+    Show the calendar list (if we have it).  This will need to be turned into
+    a form from which calendars can be picked. Up to three entries are
+    shown in each row (but the order is across then down; I would
+    prefer down then across). 
+    -->
+
+{% if g.calendars is defined  %}
+  <h2>Calendars</h2>
+  <div class="row">
+  <form action="/chooseCal" method="POST">
+  {% for cal in g.calendars if cal.selected %}
+          <div class="col-md-4">
+          <input type="checkbox" value="{{ cal.id }}" name="vals">{{ cal.summary  }}</input>
+          </div>
+         {% if loop.index is divisibleby 3 %}
+          </div> <div class="row">
+         {% endif %}
+  {% endfor %}
+  </div>
+  <input type="submit" value="Choose">
+  </form>
+{% endif %}
+<br>
+
+{% if g.calendars is defined %}
+{% if session['events'] is defined  %}
+  <h1>Times Test</h1>
+  <div class="row">
+  <form action="/deleteEventsCombine" method="POST">
+  {% set count = 0 %}
+  {% for event in session['events'] %}
+          <div class="col-md-4">
+          <input type="checkbox" value="{{ count }}" name="vals">{{ event }}</input>
+          </div>
+         {% if loop.index is divisibleby 3 %}
+          </div> <div class="row">
+         {% endif %}
+         {% set count = count + 1 %}
+  {% endfor %}
+  </div>
+  <input type="submit" value="Delete and set times">
+  </form>
+{% endif %}
+{% endif %}
+<br>
+
+
+  </div>  <!-- container (for bootstrap) -->
+  </body> </html>
