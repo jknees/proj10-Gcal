@@ -38,16 +38,6 @@
 <h1>Times</h1>
 
 
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
-
 <h2>Date range</h2>
   <form action="/setrange" method="post">
   <input type="text" name="daterange" size="12" readonly="readonly"
@@ -60,7 +50,6 @@ Begin Time:
 <input type="text" name="begin_time" placeholder="HH:mm a" readonly="readonly" value="{{session.formattedBeginTime}}">
 End Time:
 <input type="text" name="end_time" placeholder="HH:mm a" readonly="readonly" value="{{session.formattedEndTime}}">
-<input type="submit" value="Proceed">
 </form>
     <!--
     Show the calendar list (if we have it).  This will need to be turned into
@@ -69,25 +58,7 @@ End Time:
     prefer down then across). 
     -->
 
-{% if g.calendars is defined  %}
-  <h2>Calendars</h2>
-  <div class="row">
-  <form action="/chooseCal" method="POST">
-  {% for cal in g.calendars if cal.selected %}
-          <div class="col-md-4">
-          <input type="checkbox" value="{{ cal.id }}" name="vals">{{ cal.summary  }}</input>
-          </div>
-         {% if loop.index is divisibleby 3 %}
-          </div> <div class="row">
-         {% endif %}
-  {% endfor %}
-  </div>
-  <input type="submit" value="Choose">
-  </form>
-{% endif %}
-<br>
 
-{% if g.calendars is defined %}
 {% if session['events'] is defined  %}
   <h1>Times Test</h1>
   <div class="row">
@@ -105,7 +76,6 @@ End Time:
   </div>
   <input type="submit" value="Delete and set times">
   </form>
-{% endif %}
 {% endif %}
 <br>
 
