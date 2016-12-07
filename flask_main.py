@@ -381,13 +381,15 @@ def invitee(uuid):
 # Needs testing
 @app.route('/schedule/<uuid>')
 def schedule(uuid):
-  sessionVariables = collection.find({'uuid': uuid})
+  sessionVariables = collection.find_one({'uuid': uuid})
   session['end_time'] = sessionVariables['end_time']
   session['begin_time'] = sessionVariables['begin_time']
   session['end_date'] = sessionVariables['end_date']
   session['begin_date'] = sessionVariables['begin_date']
   session['events'] = sessionVariables['events']
   session['uuid'] = sessionVariables['uuid']
+  session['formattedEndTime'] = arrow.get(session['end_time']).format("HH:mm")
+  session['formattedBeginTime'] = arrow.get(session['begin_time']).format("HH:mm")
 
   return(render_template('schedule.html'))
 
