@@ -380,7 +380,7 @@ def invitee(uuid):
 
 # Needs testing
 @app.route('/schedule/<uuid>')
-def invitee(uuid):
+def schedule(uuid):
   sessionVariables = collection.find({'uuid': uuid})
   session['end_time'] = sessionVariables['end_time']
   session['begin_time'] = sessionVariables['begin_time']
