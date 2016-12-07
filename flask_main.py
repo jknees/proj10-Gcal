@@ -450,7 +450,7 @@ def interpret_time( text ):
     case it will also flash a message explaining accepted formats.
     """
     app.logger.debug("Decoding time '{}'".format(text))
-    time_formats = ["ha", "h:mma",  "h:mm a", "H:mm"]
+    time_formats = ["ha", "h:mma",  "h:mm a", "H:mm", "H a"]
     try: 
         as_arrow = arrow.get(text, time_formats).replace(tzinfo=tz.tzlocal())
         as_arrow = as_arrow.replace(year=2016) #HACK see below
