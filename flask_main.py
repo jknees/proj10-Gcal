@@ -321,9 +321,11 @@ def deleteEvents():
       session['events'].append(str(tmp))
 
 
-  timesLeft = agenda.Agenda()
-
   session['uuid'] = str(uuid.uuid4())
+  for event in session['events']:
+    fields = event.split()
+    if (fields[1].strip() != "free time"):
+      session[events].remove(event)
 
   record = { 'events': session['events'],
              'uuid': session['uuid'],
@@ -337,7 +339,7 @@ def deleteEvents():
 
   return flask.redirect(url_for('schedule', uuid = session['uuid']))
 
-@app.route('/deleteEvents', methods=['POST'])
+@app.route('/deleteEventsCombine', methods=['POST'])
 def deleteEventsCombine():
   # Called in invitee.html
   events = request.form.getlist('vals')
@@ -357,9 +359,21 @@ def deleteEventsCombine():
       session['events'].remove(event)
       session['events'].append(str(tmp))
 
+  for event in session['events']:
+    fields = event.split()
+    if (fields[1].strip() != "free time"):
+      session[events].remove(event)
+
   # Very Important!!!!
   # FIXME: Needs to intersect with two agendas.
-  collection.update({'uuid': session['uuid']}, {"$set":{'events' : session['databaseEvents'].extend(session['events'])}})
+  session['databaseEvents'].extend(session['events'])
+  newAgenda = agenda.Agenda()
+  for event in session['databaseEvents']:
+    newAgenda.append(agenda.Appt.from_string(event))
+
+  newAgenda.normalize()
+
+  collection.update({'uuid': session['uuid']}, {"$set":{'events' : str(newAgenda)}})
 
   return flask.redirect(url_for('schedule', uuid = session['uuid']))
 

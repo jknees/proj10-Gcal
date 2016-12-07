@@ -35,8 +35,6 @@
 <body>
 <div class="container">
 
-<h1>Times</h1>
-
 
 <h2>Date range</h2>
   <form action="/setrange" method="post">
@@ -60,7 +58,7 @@ End Time:
 
 
 {% if session['events'] is defined  %}
-  <h1>Times Test</h1>
+  <h1>Available Meeting Times</h1>
   <div class="row">
   {% for event in session['events'] %}
           <div class="col-md-4">
