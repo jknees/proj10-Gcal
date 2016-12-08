@@ -20,7 +20,7 @@ def test_test_insert_database():
 	begin_time = arrow.get(flask_main.interpret_time('10:00 am')).datetime.timetz()
 	end_time = arrow.get(flask_main.interpret_time('10:00 pm')).datetime.timetz()
 
-	flask_main.insertToDatabase(['2016.12.11 10:00 22:00 | free time'], _id, str(begin_date), str(end_date), begin_time, end_time)
+	flask_main.insertToDatabase(['2016.12.11 10:00 22:00 | free time'], _id, str(begin_date), str(end_date), str(begin_time), str(end_time))
 	data = collection.find_one({'uuid': uuid})
 	assert data['_id'] == _id
 	assert data['events'] == '2016.12.11 10:00 22:00 | free time'
