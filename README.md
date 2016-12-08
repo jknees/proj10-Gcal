@@ -3,7 +3,7 @@ A meeting web app. Used to schedule meetings on peoples free times using their a
 
 
 ## Author: Michal Young ##
-## Editor: Jeffrey Knees, jknees@uoregon.edu ##
+### Editor: Jeffrey Knees, jknees@uoregon.edu ###
 
 # Overview
 Get appointment data from a selection of a user's Google calendars. Take the data obtained and display the busy times and free times that correspond with in the appointed windows of time.
