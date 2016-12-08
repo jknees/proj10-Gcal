@@ -372,20 +372,23 @@ def deleteEventsCombine():
     if (fields[1].strip() != "free time"):
       session['events'].remove(event)
 
-  
-  curAgenda = agenda.Agenda()
-  for event in session['databaseEvents']:
-    curAgenda.append(agenda.Appt.from_string(event))
-
-  newAgenda = agenda.Agenda()
-  for event in session['events']:
-    newAgenda.append(agenda.Appt.from_string(event))
-
-  dataAgenda = newAgenda.intersect(curAgenda)
+  dataAgenda = setAgendas(session['databaseEvents'], session['events'])
 
   collection.update({'uuid': session['uuid']}, {"$set":{'events' : str(dataAgenda)}})
   
   return flask.redirect(url_for('schedule', uuid = session['uuid']))
+
+def setAgendas(databaseEvents, events):
+  curAgenda = agenda.Agenda()
+  newAgenda = agenda.Agenda()
+  for event in databaseEvents:
+    curAgenda.append(agenda.Appt.from_string(event))
+
+  for event in databaseEvents:
+    curAgenda.append(agenda.Appt.from_string(event))
+
+  return curAgenda.intersect(newAgenda)
+
 
 @app.route('/invitee/<uuid>')
 def invitee(uuid):
@@ -414,6 +417,7 @@ def schedule(uuid):
   session['uuid'] = sessionVariables['uuid']
   session['formattedEndTime'] = arrow.get(session['end_time']).format("HH:mm")
   session['formattedBeginTime'] = arrow.get(session['begin_time']).format("HH:mm")
+  session['url'] = url_for('invitee', uuid= session['uuid'])
 
   return(render_template('schedule.html'))
 
