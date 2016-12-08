@@ -13,7 +13,8 @@ def test_interpret_time():
 def test_interpret_date():
 	assert flask_main.interpret_date("11/11/2016") == '2016-11-11T00:00:00-08:00'
 
-def test_test_insert_database(_id):
+def test_test_insert_database():
+	global _id
 	begin_date = arrow.get(flask_main.interpret_date('12/04/2016'))
 	end_date = arrow.get(flask_main.interpret_date('12/13/2016'))
 	begin_time = arrow.get(flask_main.interpret_time('10:00 am')).datetime.timetz()
