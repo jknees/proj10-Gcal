@@ -1,11 +1,14 @@
 # proj10-Gcal
-Get appointment data from a selection of a user's Google calendars. Take the data obtained and display the busy times and free times that correspond with in the appointed windows of time.
-Then gives the option to share free times with other people so that there free times will show the intersections of free times on the final schedule page. In the end the final schedule page will show the intersecting
-free times for everyone so that a meeting can be picked.
+A meeting web app. Used to schedule meetings on peoples free times using their appointments in Google Calendar.
 
 # Author
 Author: Michal Young
 Editor: Jeffrey Knees, jknees@uoregon.edu
+
+# Overview
+Get appointment data from a selection of a user's Google calendars. Take the data obtained and display the busy times and free times that correspond with in the appointed windows of time.
+Then gives the option to share free times with other people so that there free times will show the intersections of free times on the final schedule page. In the end the final schedule page will show the intersecting
+free times for everyone so that a meeting can be picked.
 
 # Implementation
 Used flask (A python microframework) to impliment a server on my raspberry pi. Used mongodb to store all the variables needed for each session of meetings. I used the meetings as a profile instead of a person.
@@ -21,4 +24,5 @@ calendar events to make the free times.
 * open web browser to localhost:5000
 
 # Tests
+* Implemented tests for interpreting time and intersecting agendas.
 * make test
