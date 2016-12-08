@@ -1,9 +1,9 @@
 # proj10-Gcal
 A meeting web app. Used to schedule meetings on peoples free times using their appointments in Google Calendar.
 
-# Author
-Author: Michal Young
-Editor: Jeffrey Knees, jknees@uoregon.edu
+
+## Author: Michal Young ##
+## Editor: Jeffrey Knees, jknees@uoregon.edu ##
 
 # Overview
 Get appointment data from a selection of a user's Google calendars. Take the data obtained and display the busy times and free times that correspond with in the appointed windows of time.
