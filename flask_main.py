@@ -302,14 +302,14 @@ def chooseCal():
   # Gets the events from the already gotten events that lie within the time range.
   for e in events:
     if not (arrow.get(e['end_time']).timetz() < begin_time or arrow.get(e['start_time']).timetz() > end_time):
-      appt = agenda.Appt(arrow.get(e["start_time"]).datetime.date(), arrow.get(e["start_time"]).astimezone.timetz(), arrow.get(e["end_time"]).astimezone.timetz(), e["summary"])
+      appt = agenda.Appt(arrow.get(e["start_time"]).datetime.date(), arrow.get(e["start_time"]).datetime.timetz(), arrow.get(e["end_time"]).datetime.timetz(), e["summary"])
       free_times.append(appt)
 
   day_gap = end_date.datetime.date() - begin_date.datetime.date()
   free_date = begin_date
   for i in range(day_gap.days +1):
     free_date = begin_date.replace(days=+i)
-    free_appt = agenda.Appt(free_date.astimezone.date(), begin_time, end_time, "free time")
+    free_appt = agenda.Appt(free_date.datetime.date(), begin_time, end_time, "free time")
     freeblocks.append(free_appt)
 
   comp_free = free_times.complement(freeblocks) # Problem with code here
