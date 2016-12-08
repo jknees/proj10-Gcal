@@ -374,7 +374,7 @@ def deleteEvents():
 
   return flask.redirect(url_for('schedule', uuid = session['uuid']))
 
-def insertToDatabase(events, uuid, begin_date, end_date, begin_time, end_time) {
+def insertToDatabase(events, uuid, begin_date, end_date, begin_time, end_time):
   record = { 'events': events,
              'uuid': uuid,
              'begin_date': begin_date,
@@ -384,7 +384,6 @@ def insertToDatabase(events, uuid, begin_date, end_date, begin_time, end_time) {
           }
 
   collection.insert(record)
-}
 
 @app.route('/deleteEventsCombine', methods=['POST'])
 def deleteEventsCombine():
