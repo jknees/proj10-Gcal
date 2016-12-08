@@ -1,3 +1,4 @@
+
 import flask
 from flask import render_template
 from flask import request
@@ -236,12 +237,29 @@ def setrange():
     return flask.redirect(flask.url_for("choose"))
 
 def set_time_range(begin_time, end_time):
+  """
+  Helper function to set the time range
+  Input:
+    begin_time: Begin time from form
+    end_time: End time from form
+  Output:
+    None
+  Sets the sessions end_time and begin_time to the interpreted time.
+  """
   app.logger.debug("Entering setrange")
   flask.flash("Times given: '{}' - '{}'".format(request.form.get('begin_time'), request.form.get('end_time')))
   flask.session["end_time"]= interpret_time(end_time)
   flask.session["begin_time"]= interpret_time(begin_time)
 
 def set_date_range(daterange):
+  """
+  Helper function to set the date range
+  Input:
+    daterange: The range of dates given by the datepicker in the html
+  Output:
+    None
+  Modifies the session variables of datarange, begin_date, end_date to display the appropriate interpreted times.
+  """
   flask.session['daterange'] = daterange
   daterange_parts = daterange.split()
   flask.session['begin_date'] = interpret_date(daterange_parts[0])
@@ -252,6 +270,13 @@ def set_date_range(daterange):
 
 @app.route('/chooseCal', methods=['POST'])
 def chooseCal():
+  """
+  Called when the user is choosing the calendar they want to use
+  Input:
+    None
+  Output:
+    Returns a way to redirect the page to the choose function.
+  """
   app.logger.debug("Checking credentials")
   credentials = valid_credentials()
   if not credentials:
@@ -260,20 +285,22 @@ def chooseCal():
   gcal_service = get_gcal_service(credentials)
   app.logger.debug("Returned from get_gcal_service")
   
+  # Converts the arrow time objects to datetime to be used for the choosing of events in the given calendars.
   begin_date = arrow.get(flask.session['begin_date'])
   end_date = arrow.get(flask.session['end_date'])
-  begin_time = arrow.get(flask.session['begin_time']).timetz()
-  end_time = arrow.get(flask.session['end_time']).timetz()
+  begin_time = arrow.get(flask.session['begin_time']).datetime.timetz()
+  end_time = arrow.get(flask.session['end_time']).datetime.timetz()
 
-  sCal = request.form.getlist('vals')
+  sCal = request.form.getlist('vals') # Obtains values of calendars in html
   events = []
   free_times = agenda.Agenda()
   freeblocks = agenda.Agenda()
 
+  # Gets all of the events in the calendar ranging the dates and not times
   for cal in sCal:
     events.extend(list_events(gcal_service, begin_date.isoformat(), end_date.isoformat(), cal))
   
-  #app.logger.debug("Events: {}".format(events))
+  # Gets the events from the already gotten events that lie within the time range.
   for e in events:
     if not (arrow.get(e['end_time']).timetz() < begin_time or arrow.get(e['start_time']).timetz() > end_time):
       appt = agenda.Appt(arrow.get(e["start_time"]).datetime.date(), arrow.get(e["start_time"]).datetime.timetz(), arrow.get(e["end_time"]).datetime.timetz(), e["summary"])
@@ -286,7 +313,7 @@ def chooseCal():
     free_appt = agenda.Appt(free_date.datetime.date(), begin_time, end_time, "free time")
     freeblocks.append(free_appt)
 
-  comp_free = free_times.complement(freeblocks)
+  comp_free = free_times.complement(freeblocks) # Problem with code here
   flash_list = []
   for appt in comp_free:
     flash_list.append(str(appt))
@@ -302,6 +329,14 @@ def chooseCal():
 
 @app.route('/deleteEvents', methods=['POST'])
 def deleteEvents():
+  """
+  Deletes the selected events from the ones chosen in the form. Then inserts them into the database with a uuid.
+  Input:
+    None
+  Output:
+    Returns the schedule page with the uuid
+  Used only for the maker. Not used for the invitee.
+  """
   events = request.form.getlist('vals')
   eventsToBeDeleted = []
   for event in events:
@@ -349,7 +384,14 @@ def deleteEvents():
 
 @app.route('/deleteEventsCombine', methods=['POST'])
 def deleteEventsCombine():
-  # Called in invitee.html
+  """
+  Deletes the selected events from the events chosen in the form. Then itersects them with the events already in the database.
+  Input:
+    None
+  Output:
+    Returns url for schedule with the uuid
+  Used by the invitee. Because it adds to the database. Does not create.
+  """
   events = request.form.getlist('vals')
   app.logger.debug("Events wanting to be deleted: {}".format(events))
   app.logger.debug("Events in session: {}".format(len(session['events'])))
@@ -379,6 +421,14 @@ def deleteEventsCombine():
   return flask.redirect(url_for('schedule', uuid = session['uuid']))
 
 def setAgendas(databaseEvents, events):
+  """
+  Helper function to intersect agendas
+  Input:
+    databaseEvents: Free times that are in the database
+    events: Free times that the user wants added
+  Output:
+    Returns the intersected agendas
+  """
   curAgenda = agenda.Agenda()
   newAgenda = agenda.Agenda()
   for event in databaseEvents:
@@ -601,3 +651,4 @@ if __name__ == "__main__":
   # exist whether this is 'main' or not
   # (e.g., if we are running under green unicorn)
   app.run(port=CONFIG.PORT,host="0.0.0.0")
+    
