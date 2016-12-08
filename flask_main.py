@@ -287,8 +287,8 @@ def chooseCal():
   # Converts the arrow time objects to datetime to be used for the choosing of events in the given calendars.
   begin_date = arrow.get(flask.session['begin_date'])
   end_date = arrow.get(flask.session['end_date'])
-  begin_time = arrow.get(flask.session['begin_time']).datetime.timetz()
-  end_time = arrow.get(flask.session['end_time']).datetime.timetz()
+  begin_time = arrow.get(flask.session['begin_time'])
+  end_time = arrow.get(flask.session['end_time'])
 
   sCal = request.form.getlist('vals') # Obtains values of calendars in html
   events = []
@@ -302,7 +302,7 @@ def chooseCal():
   # Gets the events from the already gotten events that lie within the time range.
   for e in events:
     app.logger.debug("e in events: {}".format(e))
-    if not (arrow.get(e['end_time']).datetime.timetz() < begin_time or arrow.get(e['start_time']).datetime.timetz() > end_time):
+    if not (arrow.get(e['end_time']) < begin_time or arrow.get(e['start_time']) > end_time):
       appt = agenda.Appt(arrow.get(e['start_time']).datetime.date(), arrow.get(e['start_time']).datetime.timetz(), arrow.get(e['end_time']).datetime.timetz(), e["summary"])
       free_times.append(appt)
 
@@ -310,7 +310,7 @@ def chooseCal():
   free_date = begin_date
   for i in range(day_gap.days +1):
     free_date = begin_date.replace(days=+i)
-    free_appt = agenda.Appt(free_date.datetime.date(), begin_time, end_time, "free time")
+    free_appt = agenda.Appt(free_date.datetime.date(), begin_time.datetime.timetz(), end_time.datetime.timetz(), "free time")
     freeblocks.append(free_appt)
 
   comp_free = free_times.complement(freeblocks) # Problem with code here
