@@ -370,17 +370,21 @@ def deleteEvents():
   for event in removeList:
     session['events'].remove(event)
 
-  record = { 'events': session['events'],
-             'uuid': session['uuid'],
-             'begin_date': session['begin_date'],
-             'end_date': session['end_date'],
-             'begin_time': session['begin_time'],
-             'end_time': session['end_time']
+  insertToDatabase(session['events'], session['uuid'], session['begin_date'], session['end_date'], session['begin_time'], session['end_time'])
+
+  return flask.redirect(url_for('schedule', uuid = session['uuid']))
+
+def insertToDatabase(events, uuid, begin_date, end_date, begin_time, end_time) {
+  record = { 'events': events,
+             'uuid': uuid,
+             'begin_date': begin_date,
+             'end_date': end_date,
+             'begin_time': begin_time,
+             'end_time': end_time
           }
 
   collection.insert(record)
-
-  return flask.redirect(url_for('schedule', uuid = session['uuid']))
+}
 
 @app.route('/deleteEventsCombine', methods=['POST'])
 def deleteEventsCombine():
