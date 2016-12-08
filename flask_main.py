@@ -467,7 +467,7 @@ def schedule(uuid):
   session['uuid'] = sessionVariables['uuid']
   session['formattedEndTime'] = arrow.get(session['end_time']).format("HH:mm")
   session['formattedBeginTime'] = arrow.get(session['begin_time']).format("HH:mm")
-  session['url'] = url_for('invitee', uuid= session['uuid'], _external=True)
+  session['url'] = url_for('invitee', uuid= session['uuid'])
 
   return(render_template('schedule.html'))
 
