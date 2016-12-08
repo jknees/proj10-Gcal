@@ -287,8 +287,8 @@ def chooseCal():
   # Converts the arrow time objects to datetime to be used for the choosing of events in the given calendars.
   begin_date = arrow.get(flask.session['begin_date'])
   end_date = arrow.get(flask.session['end_date'])
-  begin_time = arrow.get(flask.session['begin_time']).timetz()
-  end_time = arrow.get(flask.session['end_time']).timetz()
+  begin_time = arrow.get(flask.session['begin_time']).datetime.timetz()
+  end_time = arrow.get(flask.session['end_time']).datetime.timetz()
 
   sCal = request.form.getlist('vals') # Obtains values of calendars in html
   events = []
