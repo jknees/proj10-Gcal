@@ -15,10 +15,10 @@ with date and time (datetime, arrow). Pymongo was used to deal with the mongo da
 calendar events to make the free times. 
 
 # How to run
-** git clone https://github.com/jknees/proj10-Gcal
-** cd 'repo'
-** make run
-** open web browser to localhost:5000
+* git clone https://github.com/jknees/proj10-Gcal
+* cd 'repo'
+* make run
+* open web browser to localhost:5000
 
 # Tests
-** make test
+* make test
