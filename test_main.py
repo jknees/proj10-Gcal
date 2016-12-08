@@ -21,4 +21,4 @@ def test_insert_database():
 	flask_main.insertToDatabase(['2016.12.11 10:00 22:00 | free time'], _id, str(begin_date), str(end_date), str(begin_time), str(end_time))
 	data = flask_main.collection.find_one({'uuid': _id})
 	assert data['uuid'] == _id
-	assert data['events'] == '2016.12.11 10:00 22:00 | free time'
+	assert data['events'] == ['2016.12.11 10:00 22:00 | free time']
