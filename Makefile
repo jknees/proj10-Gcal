@@ -51,6 +51,16 @@ INVENV = . env/bin/activate ;
 # 
 run:	env
 	($(INVENV) python3 flask_main.py) ||  true
+	env  database_exists
+	($(INVENV) python3 flask_main.py) || true
+
+database_exists: 
+	(($INVENV) python3 create_db.py) || true
+	touch database_exists
+
+destroy: 
+	(($INVENV)  python3 destroy_db.py) || true
+	rm database_exists
 
 # 'make service' runs as a background job under the gunicorn 
 #  WSGI server. FIXME:  A real production service would use 
