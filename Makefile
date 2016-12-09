@@ -49,17 +49,16 @@ INVENV = . env/bin/activate ;
 # 'make run' runs Flask's built-in test server, 
 #  with debugging turned on unless it is unset in CONFIG.py
 # 
-run:	env
-	($(INVENV) python3 flask_main.py) ||  true
+run:
 	env  database_exists
 	($(INVENV) python3 flask_main.py) || true
 
 database_exists: 
-	(($INVENV) python3 create_db.py) || true
+	($(INVENV) python3 create_db.py) || true
 	touch database_exists
 
 destroy: 
-	(($INVENV)  python3 destroy_db.py) || true
+	($(INVENV)  python3 destroy_db.py) || true
 	rm database_exists
 
 # 'make service' runs as a background job under the gunicorn 

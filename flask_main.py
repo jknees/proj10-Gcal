@@ -396,11 +396,10 @@ def deleteEventsCombine():
   Used by the invitee. Because it adds to the database. Does not create.
   """
   events = request.form.getlist('vals')
-  app.logger.debug("Events wanting to be deleted: {}".format(events))
-  app.logger.debug("Events in session: {}".format(len(session['events'])))
   eventsToBeDeleted = []
-  for event in events:
-    eventsToBeDeleted.append(session['events'][int(event)])
+  if len(events) != 0:
+    for event in events:
+      eventsToBeDeleted.append(session['events'][int(event)])
 
   for event in eventsToBeDeleted:
     fields = event.split("|")
